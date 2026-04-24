@@ -4,7 +4,17 @@
 
 --1. Liste todos os clientes cadastrados exibindo nome, CPF e telefone.
 
+SELECT	cl.Nome as 'Cliente',
+		cl.CPF as 'CPF',
+		cl.Telefone as 'Telefone'
+	FROM Cliente AS cl;
+
 --2. Liste todos os veículos cadastrados exibindo modelo, placa e quilometragem.
+
+SELECT	ve.Modelo as 'Modelo',
+		ve.Placa as 'Placa',
+		ve.Quilometragem as 'KM'
+	FROM Veiculo AS ve;
 
 --3. Mostre os veículos com quilometragem superior a 30.000 km.
 
