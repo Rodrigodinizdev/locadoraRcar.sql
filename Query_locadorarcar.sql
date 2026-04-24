@@ -18,6 +18,11 @@ SELECT	ve.Modelo as 'Modelo',
 
 --3. Mostre os veículos com quilometragem superior a 30.000 km.
 
+SELECT	ve.Modelo as 'Veiculo',
+		ve.Quilometragem as 'Quilometragem'
+	FROM Veiculo AS ve
+	WHERE ve.Quilometragem > 30000;
+
 --4. Liste os veículos disponíveis (`StatusVeiculo = 1`).
 
 --5. Liste os veículos indisponíveis (`StatusVeiculo = 0`).
@@ -55,6 +60,13 @@ SELECT	ve.Modelo as 'Modelo',
 --18. Quantos veículos estão disponíveis?
 
 --19. Quantos veículos existem por categoria?
+
+SELECT	ca.Nome as 'Categoria',
+		COUNT(ve.Id) as 'Quantidade veículos'
+	FROM Veiculo as ve
+		JOIN Categoria AS ca
+			ON ca.Id = ve.IdCategoria
+	GROUP BY ca.Nome, ca.Id;
 
 --20. Quantos veículos existem por marca?
 
