@@ -1,0 +1,110 @@
+CREATE DATABASE LocadoraRCar;
+GO
+
+USE LocadoraRCar;
+GO
+
+CREATE TABLE Endereco(
+	
+	Id INT IDENTITY,
+	CEP CHAR(8) NOT NULL,
+	Logradouro VARCHAR(255) NOT NULL,
+	Numero VARCHAR(10) NOT NULL,
+	Complemento VARCHAR(50) NOT NULL,
+	Bairro VARCHAR(50) NOT NULL,
+	Cidade VARCHAR(100) NOT NULL,
+	Estado VARCHAR(50) NOT NULL,
+
+	CONSTRAINT PK_IdEndereco PRIMARY KEY (Id)
+);
+GO
+
+CREATE TABLE MarcaVeiculo(
+
+	Id INT IDENTITY,
+	Nome VARCHAR(60) NOT NULL,
+
+	CONSTRAINT PK_IdMarcaVeiculo PRIMARY KEY (Id)
+);
+GO
+
+CREATE TABLE Categoria(
+
+	Id INT IDENTITY,
+	Nome VARCHAR(60) NOT NULL,
+
+	CONSTRAINT PK_IdCategoria PRIMARY KEY (Id)
+);
+GO
+
+CREATE TABLE TipoPagamento(
+
+	Id INT IDENTITY,
+	Nome VARCHAR(30) NOT NULL,
+
+	CONSTRAINT PK_IdTipoPagamento PRIMARY KEY (Id)
+
+);
+GO
+
+CREATE TABLE Cliente(
+
+	Id INT IDENTITY,
+	IdEndereco INT NOT NULL,
+	Nome VARCHAR(150) NOT NULL,
+	CPF CHAR(11) UNIQUE NOT NULL,
+	Email VARCHAR(255) NOT NULL,
+	Telefone CHAR(13) NOT NULL,
+
+	CONSTRAINT PK_IdCliente PRIMARY KEY (Id),
+	CONSTRAINT FK_IdEndereco_Cliente FOREIGN KEY (IdEndereco) REFERENCES Endereco (Id)
+);
+GO
+
+CREATE TABLE Veiculo(
+
+	Id INT IDENTITY,
+	IdMarcaVeiculo INT NOT NULL,
+	IdCategoria INT NOT NULL,
+	Modelo VARCHAR(60) NOT NULL,
+	Placa CHAR(7) UNIQUE NOT NULL,
+	Quilometragem INT NOT NULL,
+	StatusVeiculo BIT NOT NULL,
+
+	CONSTRAINT PK_IdVeiculo PRIMARY KEY (Id),
+	CONSTRAINT FK_IdMarcaVeiculo_Veiculo FOREIGN KEY (IdMarcaVeiculo) REFERENCES MarcaVeiculo (Id),
+	CONSTRAINT FK_IdCategoria_Veiculo FOREIGN KEY (IdCategoria) REFERENCES Categoria (Id)
+);
+GO
+
+CREATE TABLE Locacao(
+
+	Id INT IDENTITY,
+	IdCliente INT NOT NULL,
+	IdVeiculo INT NOT NULL,
+	QuilometragemRodada INT NULL,
+	DataInicio DATETIME NOT NULL,
+	DataPrevistaDevolucao DATETIME NOT NULL,
+	DataRealDevolucao DATETIME NULL,
+	ValorDiaria DECIMAL(10, 2) NOT NULL,
+
+	CONSTRAINT PK_IdLocacao PRIMARY KEY (Id),
+	CONSTRAINT FK_IdCliente_Locacao FOREIGN KEY (IdCliente) REFERENCES Cliente (Id),
+	CONSTRAINT FK_IdVeiculo_Locacao FOREIGN KEY (IdVeiculo) REFERENCES Veiculo (Id)
+);
+GO
+
+CREATE TABLE Pagamento(
+
+	Id INT IDENTITY,
+	IdLocacao INT NOT NULL,
+	IdTipoPagamento INT NOT NULL,
+	Valor DECIMAL (10,2) NOT NULL,
+	DataPagamento DATETIME NULL,
+	StatusPagamento BIT NOT NULL,
+
+	CONSTRAINT PK_IdPagamento PRIMARY KEY (Id),
+	CONSTRAINT FK_IdLocacao_Pagamento FOREIGN KEY (IdLocacao) REFERENCES Locacao (Id),
+	CONSTRAINT FK_IdTipoPagamento_Pagamento FOREIGN KEY (IdTipoPagamento) REFERENCES TipoPagamento (Id) 
+);
+GO
